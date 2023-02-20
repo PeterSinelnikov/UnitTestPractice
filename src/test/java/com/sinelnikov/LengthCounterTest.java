@@ -12,17 +12,17 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
 class LengthCounterTest {
-    LengthCounter testee;
+    LengthCounter lengthCounter;
 
     @BeforeEach
     void setUp() {
-        testee = new LengthCounter();
+        lengthCounter = new LengthCounter();
     }
 
     @ParameterizedTest(name = "Should return new empty map when passed null or empty input")
     @NullAndEmptySource
     public void shouldReturnEmptyMapWhenEmptyInput(String input) {
-        Map<Integer, Set<String>> actual = testee.countWordsByLength(input);
+        Map<Integer, Set<String>> actual = lengthCounter.countWordsByLength(input);
         assertNotNull(actual);
         assertTrue(actual.isEmpty());
     }
@@ -30,22 +30,21 @@ class LengthCounterTest {
     @ParameterizedTest(name = "{index} Should return map with {1} number of entries")
     @CsvSource(value = {"A!,1", "A:AA,2", "A: BC? DEF, 3"})
     public void shouldReturnMapWithExpectedNumberOfEntries(String input, int occurrences) {
-        int actual = testee.countWordsByLength(input).size();
+        int actual = lengthCounter.countWordsByLength(input).size();
         assertEquals(actual, occurrences);
     }
 
     @ParameterizedTest(name = "{index} Should put \"{0}\" to set of length {1}")
     @CsvSource(value = {"a, 1", "bc, 2", "def, 3"})
-    @DisplayName("Should put fragments to expected set")
     public void shouldPutFragmentsToExpectedSet(String expectedFragment, int length) {
-        Map<Integer, Set<String>> map = testee.countWordsByLength("A bc def");
+        Map<Integer, Set<String>> map = lengthCounter.countWordsByLength("A bc def");
         assertTrue(map.get(length).contains(expectedFragment));
     }
 
     @Test
     @DisplayName("Should ignore special characters when splitting")
     public void shouldIgnoreSpecialCharacters() {
-        Map<Integer, Set<String>> map = testee.countWordsByLength("!@#$%^&*()=_+{}[];:'./ \\ \"~`|");
+        Map<Integer, Set<String>> map = lengthCounter.countWordsByLength("!@#$%^&*()=_+{}[];:'./ \\ \"~`|");
         assertEquals(0, map.size());
     }
 
